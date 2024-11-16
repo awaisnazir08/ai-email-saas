@@ -15,8 +15,9 @@ export const getAurinkoAuthUrl = async (serviceType: "Google" | "Office") => {
         serviceType,
         scopes: "Mail.Read Mail.ReadWrite Mail.Send Mail.Drafts Mail.All",
         responseType: "code",
+        //where to return after successful authentication
         returnUrl: `${process.env.NEXT_PUBLIC_URL}/api/aurinko/callback`
     })
-
+    // url where the user clicks to direct to the authentication tab
     return `https://api.aurinko.io/v1/auth/authorize?${params.toString()}`
 }
