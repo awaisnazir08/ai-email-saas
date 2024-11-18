@@ -16,4 +16,16 @@ model User {
     firstName String
     lastName String
     imageUrl String?
+    accounts Account[]
+}
+
+model Account {
+    id String @id @default(cuid())  //aurinko (probably many)
+    userId String  //clerk (probably one) (a foreign key that references the id field in the User model)
+
+    accessToken String @unique
+    emailAddress String
+    name String
+
+    user User @relation(fields: [userId], references: [id])
 }

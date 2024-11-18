@@ -45,6 +45,30 @@ export const exchangeCodeForAccessToken = async (code: string) => {
             console.error(error.response?.data)
         }
         console.error(error)
+        throw error;
     }
+}
 
+export const getAccountDetails = async (accessToken: string) => {
+    try {
+        const response = await axios.get('https://api.aurinko.io/v1/account', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}` //access token is specific to the user and to the account
+            }
+        })
+
+        return response.data as {
+            email: string,
+            name: string
+        }
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error('Error fetching account details', error.response?.data);
+        }
+        else {
+            console.error("Unexpected error fetching account details: ", error)
+        }
+        throw error;
+    }
 }

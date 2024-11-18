@@ -1,4 +1,4 @@
-import { exchangeCodeForAccessToken } from '@/lib/aurinko';
+import { exchangeCodeForAccessToken, getAccountDetails } from '@/lib/aurinko';
 import { auth } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 // /api/aurinko/callback
@@ -24,7 +24,9 @@ export const GET = async (req: NextRequest) => {
     if (!token) {
         return NextResponse.json({message: "Failed to exchange the code for access token"}, {status: 400})
     }
+    
+    const accountDetails = await getAccountDetails(token.accessToken)
 
-    console.log("Userid is: ", userId)
+    // console.log("Userid is: ", userId)
     return NextResponse.json({message: "Hi there"})
 }
