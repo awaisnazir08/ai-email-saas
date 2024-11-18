@@ -1,4 +1,5 @@
 import { exchangeCodeForAccessToken, getAccountDetails } from '@/lib/aurinko';
+import { db } from '@/server/db';
 import { auth } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 // /api/aurinko/callback
@@ -27,6 +28,24 @@ export const GET = async (req: NextRequest) => {
     
     const accountDetails = await getAccountDetails(token.accessToken)
 
+    // push the account details to the database
+    // if the record already exists, update it, otherwise insert the new record
+    await db.account.upsert({
+        where: {
+            id: token.accountId.toString()
+        },
+        update: {
+            accessToken: token.accessToken
+        },
+        create: {
+            id: token.accountId.toString(),
+            userId,
+            emailAddress: accountDetails.email,
+            name: accountDetails.name,
+            accessToken: token.accessToken
+        }
+    })
+    console.log('reached here')
     // console.log("Userid is: ", userId)
-    return NextResponse.json({message: "Hi there"})
+    return NextResponse.redirect(new URL('/mail', req.url))
 }
