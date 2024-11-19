@@ -71,3 +71,4 @@ export const getAccountDetails = async (accessToken: string) => {
         throw error;
     }
 }
+

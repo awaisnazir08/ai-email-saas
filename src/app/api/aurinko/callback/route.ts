@@ -2,13 +2,16 @@ import { exchangeCodeForAccessToken, getAccountDetails } from '@/lib/aurinko';
 import { db } from '@/server/db';
 import { auth } from '@clerk/nextjs/server';
 import { type NextRequest, NextResponse } from 'next/server';
+import { connectToImap } from '../../../../lib/aurinko';
 // /api/aurinko/callback
 
 export const GET = async (req: NextRequest) => {
+
     const { userId } = await auth();
     if (!userId) {
         return NextResponse.json({message: "Unauthorized"}, {status: 401});
     }
+
 
     const params = req.nextUrl.searchParams
     const status = params.get('status')
@@ -17,7 +20,7 @@ export const GET = async (req: NextRequest) => {
         return NextResponse.json({message: "Failed to link account"}, {status: 401})
     }
 
-    // get the code that we need to exchange for the access token (very very important)
+//     // get the code that we need to exchange for the access token (very very important)
     const code = params.get('code')
     console.log('code: ', code)
     if (!code) {
@@ -31,8 +34,8 @@ export const GET = async (req: NextRequest) => {
     
     const accountDetails = await getAccountDetails(token.accessToken)
 
-    // push the account details to the database
-    // if the record already exists, update it, otherwise insert the new record
+//     // push the account details to the database
+//     // if the record already exists, update it, otherwise insert the new record
     await db.account.upsert({
         where: {
             id: token.accountId.toString()
@@ -52,3 +55,12 @@ export const GET = async (req: NextRequest) => {
     // console.log("Userid is: ", userId)
     return NextResponse.redirect(new URL('/mail', req.url))
 }
+
+
+
+// pages/api/aurinko/callback/route.ts
+
+
+// export async function GET() {
+
+// }
