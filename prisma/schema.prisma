@@ -27,5 +27,5 @@ model Account {
     emailAddress String
     name String
 
-    user User @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id])  // userId is the foreign key in the Account table, and the reference is id from the User table(which is actually the primary key there)
 }

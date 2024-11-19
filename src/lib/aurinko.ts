@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import axios from 'axios';
 
-export const getAurinkoAuthUrl = async (serviceType: "Google" | "Office") => {
+export const getAurinkoAuthUrl = async (serviceType: "Google" | "Office365") => {
     const { userId } = await auth();
     if (!userId) {
         throw new Error('Unauthorized');
@@ -13,19 +13,19 @@ export const getAurinkoAuthUrl = async (serviceType: "Google" | "Office") => {
     // hit the endpoint (authorize)
     const params = new URLSearchParams({
         clientId: process.env.AURINKO_CLIENT_ID as string,
-        serviceType,
+        serviceType: serviceType,
         scopes: "Mail.Read Mail.ReadWrite Mail.Send Mail.Drafts Mail.All",
         responseType: "code",
-        //where to return after successful authentication
-        returnUrl: `${process.env.NEXT_PUBLIC_URL}/api/aurinko/callback`
+        returnUrl: `${process.env.NEXT_PUBLIC_URL}/api/aurinko/callback`,
     })
     // url where the user clicks to direct to the authentication tab
-    return `https://api.aurinko.io/v1/auth/authorize?${params.toString()}`
+    return `https://api.aurinko.io/v1/auth/authorize?${params.toString()}`;
 }
 
 export const exchangeCodeForAccessToken = async (code: string) => {
     try {
-        const response = await axios.post(`https://api/aurinko.io/v1/auth/token/${code}`, {}, {
+        // console.log(`url being hit is: https://api.aurinko.io/v1/auth/token/${code}` )
+        const response = await axios.post(`https://api.aurinko.io/v1/auth/token/${code}`, {}, {
             auth: {
                 username: process.env.AURINKO_CLIENT_ID as string,
                 password: process.env.AURINKO_CLIENT_SECRET as string
@@ -33,7 +33,7 @@ export const exchangeCodeForAccessToken = async (code: string) => {
         })
 
         return response.data as {
-            accountId: string,
+            accountId: number,
             accessToken: string,
             userId: string,
             userSession: string
@@ -41,11 +41,10 @@ export const exchangeCodeForAccessToken = async (code: string) => {
     }
     catch (error) {
         if (axios.isAxiosError(error)) {
-            // throw new Error(error.response?.data?.error || "Failed to exchange code for access token")
-            console.error(error.response?.data)
+            console.error('Error fetching Aurinko token:', error.response?.data);
+        } else {
+            console.error('Unexpected error fetching Aurinko token:', error);
         }
-        console.error(error)
-        throw error;
     }
 }
 
