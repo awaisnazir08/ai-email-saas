@@ -18,7 +18,6 @@ export class Account {
                 bodyType: 'html'
             }
         })
-
         return response.data;
     }
 
@@ -90,5 +89,4 @@ export class Account {
             }
         }
     }
-
 }
