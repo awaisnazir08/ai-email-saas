@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SyncResponse } from "./types";
+import { SyncResponse, SyncUpdatedResponse } from "./types";
 
 export class Account {
     private token: string;
@@ -23,10 +23,23 @@ export class Account {
     }
 
     async getUpdatedEmails({deltaToken, pageToken}: {deltaToken?: string, pageToken?: string}) {
-        // let params: Record<string, string> = {}
-        // if (deltaToken) {
-        //     params.deltaToken = deltaToken
-        // }
+        let params: Record<string, string> = {}
+        if (deltaToken) {
+            params.deltaToken = deltaToken
+        }
+
+        if (pageToken) {
+            params.pageToken = pageToken
+        }
+
+        const response = await axios.get<SyncUpdatedResponse>('https://api.aurinko.io/v1/email/sync/updated', {
+            headers: {
+                Authorization: `Bearer ${this.token}`
+            },
+            params
+        })
+
+        return response.data
     }
 
     async performInitialSync() {
