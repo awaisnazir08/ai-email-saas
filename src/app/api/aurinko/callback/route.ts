@@ -35,8 +35,7 @@ export const GET = async (req: NextRequest) => {
     
     const accountDetails = await getAccountDetails(token.accessToken)
 
-//     // push the account details to the database
-//     // if the record already exists, update it, otherwise insert the new record
+    // if the record already exists, update it, otherwise insert the new record
     await db.account.upsert({
         where: {
             id: token.accountId.toString()

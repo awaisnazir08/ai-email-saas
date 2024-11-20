@@ -1,3 +1,4 @@
+import { Account } from "@/lib/account";
 import { db } from "@/server/db";
 import { NextRequest, NextResponse } from "next/server";
 //api/initial-sync
@@ -18,7 +19,8 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json({error: "Account not found"}, {status: 404})
     }
 
+    const account = new Account(dbAccount.accessToken)
     // performingInitialSync
-    // const emails = await performInitialSync()
-    // await syncEmailsToDatabase(emails)
+    const emails = await account.performInitialSync()
+    await account.syncEmailsToDatabase(emails!)
 }
