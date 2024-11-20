@@ -26,6 +26,7 @@ model Account {
     accessToken String @unique
     emailAddress String
     name String
+    nextDeltaToken String?
 
     user User @relation(fields: [userId], references: [id])  // userId is the foreign key in the Account table, and the reference is id from the User table(which is actually the primary key there)
 }

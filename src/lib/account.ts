@@ -83,7 +83,7 @@ export class Account {
 
         } catch(error) {
             if (axios.isAxiosError(error)) {
-                console.error("Error during sync: ", JSON.stringify(error.response?.data, null, null, 2));
+                console.error("Error during sync: ", JSON.stringify(error.response?.data, null, 2));
             }
             else {
                 console.error("Error during sync: ", error)

@@ -21,6 +21,25 @@ export const POST = async (req: NextRequest) => {
 
     const account = new Account(dbAccount.accessToken)
     // performingInitialSync
-    const emails = await account.performInitialSync()
-    await account.syncEmailsToDatabase(emails!)
+    const response = await account.performInitialSync()
+    if (!response) {
+        return NextResponse.json({error: "Failed to perform initial sync"}, {status: 500})
+    }
+
+    const {emails, deltaToken} = response
+    console.log(emails)
+
+    // await db.account.update({
+    //     where: {
+    //         id: accountId
+    //     },
+    //     data: {
+    //         nextDeltaToken: deltaToken
+    //     }
+
+    // })
+    // await account.syncEmailsToDatabase(emails!)
+
+    console.log("Sync completed", deltaToken)
+    return NextResponse.json({success: true}, {status: 200})
 }
