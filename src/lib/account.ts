@@ -91,7 +91,4 @@ export class Account {
         }
     }
 
-    async syncEmailsToDatabase(emails: object) {
-        emails = emails
-    }
 }
