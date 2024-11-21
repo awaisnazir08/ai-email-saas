@@ -10,7 +10,10 @@ export async function syncEmailsToDatabase(emails: EmailMessage[], accountId: st
     const limit = pLimit(10)
 
     try {
-        Promise.all(emails.map((email, index) => upsertEmail(email, accountId, index)))
+        // Promise.all(emails.map((email, index) => upsertEmail(email, accountId, index)))
+        for (const email of emails) {
+            await upsertEmail(email, accountId, 0);
+        }
     }
     catch (error) {
         console.error("Oopsies, couldn't save email at this moment", error)
@@ -239,15 +242,11 @@ async function upsertEmailAddress(address: EmailAddress, accountId: string) {
         });
 
         if (existingAddress) {
-            return await db.emailAddress.update({
+            return await db.emailAddress.findUnique({
                 where: {
                     id: existingAddress.id
                 },
-                data: {
-                    name: address.name,
-                    raw: address.raw
-                }
-            })
+            });
         }
         else {
             return await db.emailAddress.create({
