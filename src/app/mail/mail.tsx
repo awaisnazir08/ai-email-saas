@@ -2,7 +2,6 @@ import React from 'react'
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable'
 import { TooltipProvider } from '@/components/ui/tooltip'
 
-
 type Props = {
     defaultLayout: number[] | undefined
     navCollapsedSize: number
@@ -17,7 +16,6 @@ const Main = ({defaultLayout = [20,32,48], navCollapsedSize}: Props) => {
             <ResizablePanel defaultSize={defaultLayout[0]} collapsedSize={navCollapsedSize}
             collapsible={true}
             >
-
             </ResizablePanel>
 
         </ResizablePanelGroup>
