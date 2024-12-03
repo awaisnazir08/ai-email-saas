@@ -43,7 +43,7 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize }: Props) => {
             <Separator />
             {/* Sidebar */}
             <div className="flex-1">
-              {/* AI */}
+              {/* AI */ }
               Ask AI
             </div>
           </div>
