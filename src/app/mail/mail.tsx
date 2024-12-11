@@ -45,9 +45,12 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize }: Props) => {
             <div className="flex-1">
               {/* AI */ }
               Ask AI
+
             </div>
           </div>
+          
         </ResizablePanel>
+
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
           <Tabs defaultValue='inbox'>
