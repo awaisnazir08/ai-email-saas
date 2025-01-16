@@ -6,6 +6,7 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import AccountSwitcher from './account-switcher'
 
 type Props = {
   defaultLayout: number[] | undefined
@@ -38,7 +39,7 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapsed
           <div className='flex flex-col h-full flex-1'>
             <div className={cn('flex h-[52px] items-center justify-between', isCollapsed ? 'h-[52px]' : 'px-2')}>
               {/* Account Switcher */}
-              Account Switcher
+              <AccountSwitcher isCollapsed = {isCollapsed}/>
             </div>
             <Separator />
             {/* Sidebar */}
