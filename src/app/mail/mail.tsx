@@ -13,9 +13,9 @@ type Props = {
   defaultCollapsed: boolean
 }
 
-const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize }: Props) => {
+const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapsed }: Props) => {
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
 
   return (
     <TooltipProvider delayDuration={0}>
