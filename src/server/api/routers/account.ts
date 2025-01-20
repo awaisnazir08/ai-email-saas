@@ -15,11 +15,9 @@ export const authoriseAccountAccess = async (accountId: string, userId: string) 
             accessToken: true
         }
     })
-
     if (!account) {
         throw new Error("Account not found")
     }
-
     return account
 }
 
