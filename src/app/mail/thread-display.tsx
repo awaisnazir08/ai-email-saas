@@ -56,43 +56,58 @@ const ThreadDisplay = () => {
                 </div>
             </div>
             <Separator />
-            {thread ? 
-            <React.Fragment>
-                <div className='flex flex-col flex-1 overflow-scroll'>
-                    <div className='flex items-center p-4'>
-                        <div className='flex items-center gap-4 text-sm'>
-                            <Avatar> 
-                                <AvatarImage alt='avatar'/>
-                                <AvatarFallback>
-                                    {thread.emails[0]?.from?.name?.split(' ').map(chunk => chunk[0]).join('')}
-                                </AvatarFallback>
-                            </Avatar>
-                            <div className='grid gap-1'>
-                                <div className='font-semibold'>
-                                    {thread.emails[0]?.from?.name}
-                                    <div className='text-xs line-clamp-1'>
-                                        {thread.emails[0]?.subject}
+            {thread ?
+                <React.Fragment>
+                    <div className='flex flex-col flex-1 overflow-scroll'>
+                        <div className='flex items-center p-4'>
+                            <div className='flex items-center gap-4 text-sm'>
+                                <Avatar>
+                                    <AvatarImage alt='avatar' />
+                                    <AvatarFallback>
+                                        {thread.emails[0]?.from?.name?.split(' ').map(chunk => chunk[0]).join('')}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div className='grid gap-1'>
+                                    <div className='font-semibold'>
+                                        {thread.emails[0]?.from?.name}
+                                        <div className='text-xs line-clamp-1'>
+                                            {thread.emails[0]?.subject}
+                                        </div>
+                                        <div className='text-xs line-clamp-1'>
+                                            <span className="font-medium">
+                                                Reply-To:&nbsp;
+                                            </span>
+                                            {thread.emails[0]?.from.address}
+                                        </div>
                                     </div>
-                                    <div className='text-xs line-clamp-1'>
-                                        <span className="font-medium">
-                                            Reply-To:&nbsp;
-                                        </span>
-                                        {thread.emails[0]?.from.address}
-                                    </div>  
                                 </div>
                             </div>
+                            {thread.emails[0]?.sentAt && (
+                                <div className='ml-auto text-xs text-muted-foreground'>
+                                    {format(new Date(thread.emails[0]?.sentAt), 'PPPP')}
+                                </div>
+                            )}
                         </div>
-                        {thread.emails[0]?.sentAt && (
-                            <div className='ml-auto text-xs text-muted-foreground'>
-                                {format(new Date(thread.emails[0]?.sentAt), 'PPPP')}
+                        <Separator />
+                        <div className='max-h-[calc(100vh-500px)] overflow-scroll-hidden flex flex-col'>
+                            <div className='p-6 flex flex-col gap-4'>
+                                {thread.emails.map((email) => {
+                                    return <div key={email.id}>
+                                        {email.subject}
+                                    </div>
+                                })}
                             </div>
-                        )}
+                        </div>
+                        <div className="flex-1">
+                            <Separator className='mt-auto' />
+                            {/* Reply Box  */}
+                            Reply Box
+                        </div>
                     </div>
-                </div>
-            </React.Fragment> : <React.Fragment>
-                <div className='p-8 text-center text-muted-foreground'>
-                    No message selected
-                </div>
+                </React.Fragment> : <React.Fragment>
+                    <div className='p-8 text-center text-muted-foreground'>
+                        No message selected
+                    </div>
                 </React.Fragment>}
         </div>
     )
