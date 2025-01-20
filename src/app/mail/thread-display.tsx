@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { format } from 'date-fns';
+import EmailDisplay from './email-display';
 
 
 const ThreadDisplay = () => {
@@ -92,9 +93,7 @@ const ThreadDisplay = () => {
                         <div className='max-h-[calc(100vh-500px)] overflow-scroll-hidden flex flex-col'>
                             <div className='p-6 flex flex-col gap-4'>
                                 {thread.emails.map((email) => {
-                                    return <div key={email.id}>
-                                        {email.subject}
-                                    </div>
+                                    return <EmailDisplay key={email.id} email = {email} />
                                 })}
                             </div>
                         </div>
