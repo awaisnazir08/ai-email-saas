@@ -13,6 +13,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { format } from 'date-fns';
 
 
 const ThreadDisplay = () => {
@@ -66,7 +67,26 @@ const ThreadDisplay = () => {
                                     {thread.emails[0]?.from?.name?.split(' ').map(chunk => chunk[0]).join('')}
                                 </AvatarFallback>
                             </Avatar>
+                            <div className='grid gap-1'>
+                                <div className='font-semibold'>
+                                    {thread.emails[0]?.from?.name}
+                                    <div className='text-xs line-clamp-1'>
+                                        {thread.emails[0]?.subject}
+                                    </div>
+                                    <div className='text-xs line-clamp-1'>
+                                        <span className="font-medium">
+                                            Reply-To:&nbsp;
+                                        </span>
+                                        {thread.emails[0]?.from.address}
+                                    </div>  
+                                </div>
+                            </div>
                         </div>
+                        {thread.emails[0]?.sentAt && (
+                            <div className='ml-auto text-xs text-muted-foreground'>
+                                {format(new Date(thread.emails[0]?.sentAt), 'PPPP')}
+                            </div>
+                        )}
                     </div>
                 </div>
             </React.Fragment> : <React.Fragment>
