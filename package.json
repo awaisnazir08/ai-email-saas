@@ -64,6 +64,7 @@
     "imap": "^0.8.19",
     "input-otp": "^1.2.5",
     "jotai": "^2.11.0",
+    "kbar": "^0.1.0-beta.45",
     "lucide-react": "^0.454.0",
     "mailparser": "^3.7.1",
     "next": "^14.2.4",
