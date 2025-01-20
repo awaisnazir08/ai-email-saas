@@ -20,7 +20,7 @@ const ThreadList = () => {
     }, {} as Record<string, typeof threads>)
 
     return (
-        <div className='max-w-full overflow-y-scroll max-h-[calc(100vh-120px)]'>
+        <div className='max-w-full overflow-y-scroll-hidden max-h-[calc(100vh-120px)]'>
             <div className='flex flex-col gap-2 p-4 pt-0'>
                 {Object.entries(groupedThreads ?? {}).map(([date, threads]) => {
                     return <React.Fragment key={date}>
