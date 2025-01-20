@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
 const ThreadList = () => {
-    const { threads } = useThreads();
+    const { threads, threadId, setThreadId } = useThreads();
 
     const groupedThreads = threads?.reduce((acc, thread) => {
         const date = format(thread.emails[0]?.sentAt ?? new Date(), 'yyyy-MM-dd')
@@ -28,7 +28,9 @@ const ThreadList = () => {
                             {date}
                         </div>
                         {threads.map((thread) => {
-                            return <button key={thread.id} className={cn('flex flex-col gap-2 items-start rounded-lg border p-3 text-left text-sm transition-all relative ')}>
+                            return <button onClick={() => setThreadId(thread.id)} key={thread.id} className={cn('flex flex-col gap-2 items-start rounded-lg border p-3 text-left text-sm transition-all relative', {
+                                "bg-accent": thread.id === threadId
+                            })}>
                                 <div className='flex flex-col w-full gap-2 '>
                                     <div className='flex items-center '>
                                         <div className='flex items-center gap-2'>
