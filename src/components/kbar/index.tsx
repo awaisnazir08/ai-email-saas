@@ -1,7 +1,8 @@
+'use client';
 import { KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from 'kbar';
 import React from 'react';
 
-export default function KBar ({ children }: { children: React.ReactNode }){
+export default function KBar ({ children }: { children: React.ReactNode }){  //children props from KBar to the ActualComponent
     return <KBarProvider>
         <ActualComponent>
             {children}
