@@ -15,6 +15,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { format } from 'date-fns';
 import EmailDisplay from './email-display';
+import ReplyBox from './reply-box';
 
 
 const ThreadDisplay = () => {
@@ -100,7 +101,7 @@ const ThreadDisplay = () => {
                         <div className="flex-1">
                             <Separator className='mt-auto' />
                             {/* Reply Box  */}
-                            Reply Box
+                            <ReplyBox />
                         </div>
                     </div>
                 </React.Fragment> : <React.Fragment>

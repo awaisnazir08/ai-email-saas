@@ -74,7 +74,6 @@ export default function KBar({ children }: { children: React.ReactNode }) {  //c
         <ActualComponent>
             {children}
         </ActualComponent>
-
     </KBarProvider>
 }
 
