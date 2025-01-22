@@ -66,7 +66,7 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapsed
                 Inbox
               </h1>
               <TabsList className='ml-auto'>
-                <TabsTrigger value='inbox'  className='text-zinc-600 dark:text-zinc-200'>
+                <TabsTrigger value='inbox'  className='text-zinc-600 dark:text-zinc-200' >
                   Inbox
                 </TabsTrigger>
                 <TabsTrigger value='done' className='text-zinc-600 dark:text-zinc-200'>

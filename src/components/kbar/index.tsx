@@ -5,6 +5,7 @@ import RenderResults from './render-results';
 import { useLocalStorage } from 'usehooks-ts';
 import { useTheme } from 'next-themes';
 import useThemeSwitching from './use-theme-switching';
+import useAccountSwitching from './use-account-switching';
 
 export default function KBar({ children }: { children: React.ReactNode }) {  //children props from KBar to the ActualComponent
 
@@ -80,6 +81,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {  //c
 
 const ActualComponent = ({ children }: { children: React.ReactNode }) => {
     useThemeSwitching();
+    useAccountSwitching();
     return <React.Fragment>
         <KBarPortal>
             <KBarPositioner className='fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm scrollbar-hide !p-0 z-[999]'>
