@@ -10,6 +10,7 @@ import AccountSwitcher from './account-switcher'
 import Sidebar from './sidebar'
 import ThreadList from './thread-list'
 import ThreadDisplay from './thread-display'
+import { useLocalStorage } from 'usehooks-ts'
 
 type Props = {
   defaultLayout: number[] | undefined
@@ -20,6 +21,7 @@ type Props = {
 const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapsed }: Props) => {
 
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  const [done, setDone] = useLocalStorage('ai-email-saas-done', false);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -64,7 +66,7 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapsed
                 Inbox
               </h1>
               <TabsList className='ml-auto'>
-                <TabsTrigger value='inbox' className='text-zinc-600 dark:text-zinc-200'>
+                <TabsTrigger value='inbox'  className='text-zinc-600 dark:text-zinc-200'>
                   Inbox
                 </TabsTrigger>
                 <TabsTrigger value='done' className='text-zinc-600 dark:text-zinc-200'>

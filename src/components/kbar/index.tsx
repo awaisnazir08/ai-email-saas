@@ -3,10 +3,13 @@ import { Action, KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSea
 import React from 'react';
 import RenderResults from './render-results';
 import { useLocalStorage } from 'usehooks-ts';
+import { useTheme } from 'next-themes';
+import useThemeSwitching from './use-theme-switching';
 
 export default function KBar({ children }: { children: React.ReactNode }) {  //children props from KBar to the ActualComponent
 
     const [tab, setTab] = useLocalStorage('ai-email-saas-tab', 'inbox');
+    const [done, setDone] = useLocalStorage('ai-email-saas-done', false);
 
     const actions: Action[] = [
         {
@@ -43,28 +46,28 @@ export default function KBar({ children }: { children: React.ReactNode }) {  //c
                 setTab('sent')
             },
         },
-        // {
-        //     id: "pendingAction",
-        //     name: "See done",
-        //     shortcut: ['g', "d"],
-        //     keywords: "done",
-        //     section: "Navigation",
-        //     subtitle: "View the done emails",
-        //     perform: () => {
-        //         setDone(true)
-        //     },
-        // },
-        // {
-        //     id: "doneAction",
-        //     name: "See Pending",
-        //     shortcut: ['g', "u"],
-        //     keywords: 'pending, undone, not done',
-        //     section: "Navigation",
-        //     subtitle: "View the pending emails",
-        //     perform: () => {
-        //         setDone(false)
-        //     },
-        // },
+        {
+            id: "pendingAction",
+            name: "See done",
+            shortcut: ['g', "d"],
+            keywords: "done",
+            section: "Navigation",
+            subtitle: "View the done emails",
+            perform: () => {
+                setDone(true)
+            },
+        },
+        {
+            id: "doneAction",
+            name: "See Pending",
+            shortcut: ['g', "u"],
+            keywords: 'pending, undone, not done',
+            section: "Navigation",
+            subtitle: "View the pending emails",
+            perform: () => {
+                setDone(false)
+            },
+        },
     ];
     return <KBarProvider actions={actions}>
         <ActualComponent>
@@ -74,7 +77,9 @@ export default function KBar({ children }: { children: React.ReactNode }) {  //c
     </KBarProvider>
 }
 
+
 const ActualComponent = ({ children }: { children: React.ReactNode }) => {
+    useThemeSwitching();
     return <React.Fragment>
         <KBarPortal>
             <KBarPositioner className='fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm scrollbar-hide !p-0 z-[999]'>
