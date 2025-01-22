@@ -1,9 +1,22 @@
 'use client';
-import { KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from 'kbar';
+import { Action, KBarAnimator, KBarPortal, KBarPositioner, KBarProvider, KBarSearch } from 'kbar';
 import React from 'react';
 
 export default function KBar({ children }: { children: React.ReactNode }) {  //children props from KBar to the ActualComponent
-    return <KBarProvider>
+
+    const actions: Action[] = [
+        {
+            id: 'inboxAction',
+            name: 'Inbox',
+            shortcut: ['g', 'i'],
+            section: "Navigation",
+            subtitle: "View your inbox",
+            perform: () => {
+            console.log('Inbox');
+        }
+    }
+    ]
+    return <KBarProvider actions={actions}>
         <ActualComponent>
             {children}
         </ActualComponent>
