@@ -1,5 +1,5 @@
 // ResultItem.tsx
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
 import * as React from "react";
 import type { ActionImpl, ActionId } from "kbar";
 
@@ -35,7 +35,6 @@ const ResultItem = React.forwardRef(
                         type: 'spring',
                         ease: 'easeInOut',
                     }}>
-
                     </motion.div>
                 )}
                 <div className="flex gap-2 items-center relative z-10">
