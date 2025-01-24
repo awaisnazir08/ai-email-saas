@@ -29,7 +29,6 @@ const EmailEditor = (props: Props) => {
         <div>
             <div className='prose w-full px-4'>
                 <EditorContent editor={editor} value={value}/>
-
             </div>
         </div>
     )
