@@ -105,6 +105,7 @@ export const accountRouter = createTRPCRouter({
             }
         })
     }),
+    
     getSuggestions: privateProcedure.input(z.object({
         accountId: z.string()
     })).query(async ({ctx, input}) => {

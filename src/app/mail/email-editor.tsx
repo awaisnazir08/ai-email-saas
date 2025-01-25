@@ -6,10 +6,28 @@ import { Text } from '@tiptap/extension-text';
 import EditorMenubar from './editor-menubar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
+import TagInput from './tag-input';
+import { Input } from '@/components/ui/input';
+import { set } from 'date-fns';
 
-type Props = {}
+type Props = {
+    subject: string
+    setSubject: (value: string) => void
 
-const EmailEditor = (props: Props) => {
+    toValues: { label: string, value: string }[]
+    setToValues: (value: { label: string, value: string }[]) => void
+
+    ccValues: { label: string, value: string }[]
+    setCcValues: (value: { label: string, value: string }[]) => void
+
+    to: string[]
+    handleSend: (value: string) => void
+    isSending: boolean
+
+    defaultToolbarExpanded?: boolean
+}
+
+const EmailEditor = ({ subject, setSubject, toValues, setToValues, ccValues, setCcValues, to, handleSend, isSending, defaultToolbarExpanded } : Props) => {
     const [value, setValue] = React.useState<string>('')
     const [expanded, setExpanded] = React.useState<boolean>(false)
     const CustomText = Text.extend({
@@ -43,7 +61,19 @@ const EmailEditor = (props: Props) => {
                 {
                     expanded && (
                         <React.Fragment>
-                            cc inputs
+                            <TagInput
+                                label='To'
+                                onChange={setToValues}
+                                placeholder='Add Recipients'
+                                value={toValues}
+                            />
+                            <TagInput
+                                label='Cc'
+                                onChange={setCcValues}
+                                placeholder='Add Recipients'
+                                value={ccValues}
+                            />
+                            <Input id='subject' placeholder='subject' value={subject} onChange={(e) => setSubject(e.target.value)}/>
                         </React.Fragment>
                     )}
                 <div className='flex items-center gap-2'>
