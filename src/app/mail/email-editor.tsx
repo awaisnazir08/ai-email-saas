@@ -11,6 +11,7 @@ type Props = {}
 
 const EmailEditor = (props: Props) => {
     const [value, setValue] = React.useState<string>('')
+    const [expanded, setExpanded] = React.useState<boolean>(false)
     const CustomText = Text.extend({
         addKeyboardShortcuts() {
             return {
@@ -37,6 +38,26 @@ const EmailEditor = (props: Props) => {
         <div>
             <div className='flex p-4 py-2 border-b'>
                 <EditorMenubar editor={editor} />
+            </div>
+            <div className='p-4 pb-0 space-y-2'>
+                {
+                    expanded && (
+                        <React.Fragment>
+                            cc inputs
+                        </React.Fragment>
+                    )}
+                <div className='flex items-center gap-2'>
+                    <div className='cursor-pointer' onClick={() => setExpanded(!expanded)}>
+                        <span className='text-green-600 font-medium'>
+                            Draft {" "}
+                        </span>
+                        <span>
+                            to Awais
+                        </span>
+                    </div>
+
+                </div>
+
             </div>
             <div className='prose w-full px-4 py-4'>
                 <EditorContent editor={editor} value={value} />
