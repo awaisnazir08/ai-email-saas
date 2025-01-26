@@ -7,11 +7,12 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
 import { Bot } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
-
+import { generateEmail } from './action';
+import { readStreamableValue } from 'ai/rsc';
 
 type Props = {
     isComposing: boolean,
@@ -21,6 +22,17 @@ type Props = {
 const AIComposeButton = ({ isComposing, onGenerate }: Props) => {
     const [open, setOpen] = React.useState(false);
     const [prompt, setPrompt] = React.useState<string>('')
+
+    const aiGenerate = async () => {
+        const {output} = await generateEmail('', prompt)
+        for await (const token of readStreamableValue(output)) 
+        {
+            if (token) {
+                console.log(token)
+                onGenerate(token)
+            }
+        }
+    }
 
     return (
         <Dialog>
@@ -37,9 +49,10 @@ const AIComposeButton = ({ isComposing, onGenerate }: Props) => {
                     </DialogDescription>
                     <div className='h-2'>
                     </div>
-                    <Textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder='Enter a prompt.' />
+                    <Textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder='Enter a prompt...' />
                     <div className='h-2' />
                     <Button onClick={() => {
+                        aiGenerate()
                         setOpen(false)
                         setPrompt('')
                     }}>
@@ -52,4 +65,4 @@ const AIComposeButton = ({ isComposing, onGenerate }: Props) => {
     )
 }
 
-export default AIComposeButton
+export default AIComposeButton;
