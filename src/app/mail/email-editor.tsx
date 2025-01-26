@@ -9,10 +9,12 @@ import { Button } from '@/components/ui/button';
 import TagInput from './tag-input';
 import { Input } from '@/components/ui/input';
 import { set } from 'date-fns';
+import AIComposeButton from './ai-compose-button';
+import { Token } from '@clerk/nextjs/server';
 
 type Props = {
     subject: string
-    setSubject: (value: string) => void
+    setSubject: (subject: string) => void
 
     toValues: { label: string, value: string }[]
     setToValues: (value: { label: string, value: string }[]) => void
@@ -29,7 +31,7 @@ type Props = {
 
 const EmailEditor = ({ subject, setSubject, toValues, setToValues, ccValues, setCcValues, to, handleSend, isSending, defaultToolbarExpanded } : Props) => {
     const [value, setValue] = React.useState<string>('')
-    const [expanded, setExpanded] = React.useState<boolean>(false)
+    const [expanded, setExpanded] = React.useState<boolean>(defaultToolbarExpanded ?? false)
     const CustomText = Text.extend({
         addKeyboardShortcuts() {
             return {
@@ -47,6 +49,11 @@ const EmailEditor = ({ subject, setSubject, toValues, setToValues, ccValues, set
             setValue(editor.getHTML())
         }
     })
+
+    const onGenerate = (token: string) => {
+        console.log(token)
+        editor?.commands?.insertContent(token)
+    }
 
     if (!editor) {
         return null;
@@ -73,7 +80,7 @@ const EmailEditor = ({ subject, setSubject, toValues, setToValues, ccValues, set
                                 placeholder='Add Recipients'
                                 value={ccValues}
                             />
-                            <Input id='subject' placeholder='subject' value={subject} onChange={(e) => setSubject(e.target.value)}/>
+                            <Input className='w-full' id='subject' placeholder='Subject' value={subject} onChange={(e) => setSubject(e.target.value)}/>
                         </React.Fragment>
                     )}
                 <div className='flex items-center gap-2'>
@@ -82,10 +89,10 @@ const EmailEditor = ({ subject, setSubject, toValues, setToValues, ccValues, set
                             Draft {" "}
                         </span>
                         <span>
-                            to Awais
+                            to {to?.join(', ')}
                         </span>
                     </div>
-
+                    <AIComposeButton isComposing={defaultToolbarExpanded} onGenerate={onGenerate} />
                 </div>
 
             </div>
@@ -101,7 +108,10 @@ const EmailEditor = ({ subject, setSubject, toValues, setToValues, ccValues, set
                     </kbd> {" "}
                     For AI autocomplete
                 </span>
-                <Button>
+                <Button onClick={async () =>{
+                    editor?.commands?.clearContent()
+                    await handleSend(value)
+                }} disabled={isSending}>
                     Send
                 </Button>
 
