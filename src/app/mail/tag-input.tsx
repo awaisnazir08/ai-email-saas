@@ -3,6 +3,7 @@ import { api } from '@/trpc/react';
 import React from 'react';
 import Avatar from 'react-avatar';
 import Select from 'react-select';
+
 type Props = {
     placeholder: string
     label: string
@@ -64,4 +65,4 @@ const TagInput = ({ placeholder, label, onChange, value }: Props) => {
     )
 }
 
-export default TagInput
+export default TagInput;
