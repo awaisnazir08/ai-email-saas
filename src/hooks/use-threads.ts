@@ -10,7 +10,7 @@ const useThreads = () => {
     const [accountId] = useLocalStorage('accountId', '')
     const [tab] = useLocalStorage('ai-email-saas-tab', 'inbox')
     const [done] = useLocalStorage('ai-email-saas-done', false)
-    const [threadId, setThreadId] = useAtom(threadIdAtom)
+    const [threadId, setThreadId] = useAtom(threadIdAtom)  // for global state management
 
     const {data: threads} = api.account.getThreads.useQuery({
         accountId,
