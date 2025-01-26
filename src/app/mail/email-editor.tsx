@@ -11,6 +11,8 @@ import { Input } from '@/components/ui/input';
 import { set } from 'date-fns';
 import AIComposeButton from './ai-compose-button';
 import { Token } from '@clerk/nextjs/server';
+import { generate } from './action';
+import { readStreamableValue } from 'ai/rsc';
 
 type Props = {
     subject: string
@@ -32,11 +34,25 @@ type Props = {
 const EmailEditor = ({ subject, setSubject, toValues, setToValues, ccValues, setCcValues, to, handleSend, isSending, defaultToolbarExpanded } : Props) => {
     const [value, setValue] = React.useState<string>('')
     const [expanded, setExpanded] = React.useState<boolean>(defaultToolbarExpanded ?? false)
+    const [token, setToken] = React.useState<string>('')
+
+
+    const aiGenerate = async (value: string) => {
+        const { output } = await generate(value) 
+        for await (const token of readStreamableValue(output)) {
+            if (token){
+                setToken(token)
+            }
+        }
+
+    }
+
     const CustomText = Text.extend({
         addKeyboardShortcuts() {
             return {
-                'Meta-j': () => {
-                    console.log('Meta-j')
+                'Alt-j': () => {
+                    // console.log('Alt-j')
+                    aiGenerate(this.editor.getText())
                     return true;
                 }
             }
@@ -58,6 +74,10 @@ const EmailEditor = ({ subject, setSubject, toValues, setToValues, ccValues, set
     if (!editor) {
         return null;
     }
+
+    React.useEffect(() => {
+        editor?.commands?.insertContent(token)
+    }, [editor, token])
 
     return (
         <div>
@@ -92,7 +112,7 @@ const EmailEditor = ({ subject, setSubject, toValues, setToValues, ccValues, set
                             to {to?.join(', ')}
                         </span>
                     </div>
-                    <AIComposeButton isComposing={defaultToolbarExpanded} onGenerate={onGenerate} />
+                    <AIComposeButton isComposing={defaultToolbarExpanded ?? false} onGenerate={onGenerate} />
                 </div>
 
             </div>
