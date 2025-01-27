@@ -3,6 +3,7 @@ import React, { use } from 'react'
 import EmailEditor from './email-editor';
 import { api, RouterOutputs } from '@/trpc/react';
 import useThreads from '@/hooks/use-threads';
+import { toast } from 'sonner';
 
 
 const ReplyBox = () => {
@@ -17,12 +18,12 @@ const ReplyBox = () => {
   }
 
   return (
-    <Component replyDetails={replyDetails}/>
+    <Component replyDetails={replyDetails} />
   )
 }
 
-const Component = ({ replyDetails }: { replyDetails: RouterOutputs['account']['getReplyDetails']}) => {  // routerOutputs for return type of replyDetails
-  const { threadId, accountId} = useThreads();
+const Component = ({ replyDetails }: { replyDetails: RouterOutputs['account']['getReplyDetails'] }) => {  // routerOutputs for return type of replyDetails
+  const { threadId, accountId } = useThreads();
   const [subject, setSubject] = React.useState(replyDetails.subject.startsWith('Re:') ? replyDetails.subject : `Re: ${replyDetails.subject}`)
   const [toValues, setToValues] = React.useState<{ label: string, value: string }[]>(replyDetails.to.map(to => ({ label: to.address, value: to.address })))
   const [ccValues, setCcValues] = React.useState<{ label: string, value: string }[]>(replyDetails.cc.map(cc => ({ label: cc.address, value: cc.address })))
@@ -44,28 +45,54 @@ const Component = ({ replyDetails }: { replyDetails: RouterOutputs['account']['g
 
   }, [threadId, replyDetails])
 
+  const sendEmail = api.account.sendEmail.useMutation()
+
   const handleSend = async (value: string) => {
-    console.log(value)
+    if (!replyDetails) {
+      return null
+    }
+    sendEmail.mutate({
+      accountId,
+      threadId: threadId ?? undefined,
+      body: value,
+      subject,
+      from: replyDetails.from,
+      to: replyDetails.to.map(to => ({ address: to.address, name: to.name ?? "" })),
+      cc: replyDetails.cc.map(cc => ({ address: cc.address, name: cc.name ?? '' })),
+
+      replyTo: replyDetails.from,
+      inReplyTo: replyDetails.id  // internet message id
+    }, {
+      onSuccess: () => {
+        toast.success('Email Sent!')   // we need toasts for pop-ups to show up
+      }, 
+      onError: (error) => {
+        console.log(error) 
+        toast.error('Error sending Email')
+      }
+    })
   }
 
 
+
+
   return (
-    <EmailEditor 
-    subject={subject}
-    setSubject={setSubject}
+    <EmailEditor
+      subject={subject}
+      setSubject={setSubject}
 
-    toValues={toValues}
-    setToValues={setToValues}
+      toValues={toValues}
+      setToValues={setToValues}
 
-    ccValues={ccValues}
-    setCcValues={setCcValues}
+      ccValues={ccValues}
+      setCcValues={setCcValues}
 
-    to={replyDetails.to.map(to => to.address)}
+      to={replyDetails.to.map(to => to.address)}
 
-    isSending={true}
+      isSending={true}
 
-    handleSend={handleSend}
-    
+      handleSend={handleSend}
+
     />
   )
 }

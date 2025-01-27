@@ -1,4 +1,3 @@
-import { emailAddressSchema } from './../../../lib/types';
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "../trpc";
 import { db } from "@/server/db";
@@ -166,6 +165,7 @@ export const accountRouter = createTRPCRouter({
             id: lastExternalEmail.internetMessageId
         }
     }),
+    
     sendEmail: privateProcedure.input(z.object({
         accountId: z.string(),
         body: z.string(),
