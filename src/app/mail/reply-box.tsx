@@ -89,7 +89,7 @@ const Component = ({ replyDetails }: { replyDetails: RouterOutputs['account']['g
 
       to={replyDetails.to.map(to => to.address)}
 
-      isSending={true}
+      isSending={sendEmail.isPending}
 
       handleSend={handleSend}
 
