@@ -67,6 +67,7 @@ export const accountRouter = createTRPCRouter({
         done: z.boolean()
     })).query(async ({ctx, input}) => {   // context always contain the database and the userId, input contains the input passed to this function
         const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId)
+        
         const acc = new Account(account.accessToken)
         acc.syncEmails().catch(console.error)
 

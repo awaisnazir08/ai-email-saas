@@ -3,15 +3,29 @@ import { EmailMessage, EmailAddress, EmailAttachment } from "./types";
 // used for concurrency, say we have 1000 emails, we don't want to send all the mails to our database and crash/cook our db/server. It is basically a rate limiting module which probably sends data in chunks
 import pLimit from 'p-limit';
 import { db } from "@/server/db";
+import { OramaClient } from "./orama";
 
 export async function syncEmailsToDatabase(emails: EmailMessage[], accountId: string) {
     console.log("Attempting to sync emails to database", emails.length)
     // send chunks of 10 at a time 
     const limit = pLimit(10)
 
+    const orama = new OramaClient(accountId)
+
+    await orama.initialize()
+
+
     try {
         // Promise.all(emails.map((email, index) => upsertEmail(email, accountId, index)))
         for (const email of emails) {
+            await orama.insert({
+                subject: email.subject,
+                body: email.body,
+                from: email.from.address,
+                to: email.to.map(to => to.address),
+                sentAt: email.sentAt.toLocaleString(),
+                threadId: email.threadId
+            })
             await upsertEmail(email, accountId, 0);
         }
     }
