@@ -18,6 +18,7 @@ import EmailDisplay from './email-display';
 import ReplyBox from './reply-box';
 import { isSearchingAtom } from './search-bar';
 import { useAtom } from 'jotai';
+import SearchDisplay from './search-display';
 
 
 const ThreadDisplay = () => {
@@ -61,7 +62,7 @@ const ThreadDisplay = () => {
                 </div>
             </div>
             <Separator />
-            {isSearching ? <>Searching...</> : (
+            {isSearching ? <SearchDisplay /> : (
                 <>
                     {thread ? (
                         <div className="flex flex-col flex-1 overflow-auto">
