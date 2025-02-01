@@ -11,6 +11,7 @@ import Sidebar from './sidebar'
 import ThreadList from './thread-list'
 import ThreadDisplay from './thread-display'
 import { useLocalStorage } from 'usehooks-ts'
+import SearchBar from './search-bar'
 
 type Props = {
   defaultLayout: number[] | undefined
@@ -44,18 +45,18 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapsed
           <div className='flex flex-col h-full flex-1'>
             <div className={cn('flex h-[52px] items-center justify-between', isCollapsed ? 'h-[52px]' : 'px-2')}>
               {/* Account Switcher */}
-              <AccountSwitcher isCollapsed = {isCollapsed}/>
+              <AccountSwitcher isCollapsed={isCollapsed} />
             </div>
             <Separator />
             {/* Sidebar */}
-            <Sidebar isCollapsed = {isCollapsed}/>
+            <Sidebar isCollapsed={isCollapsed} />
             <div className="flex-1">
-              {/* AI */ }
+              {/* AI */}
               Ask AI
 
             </div>
           </div>
-          
+
         </ResizablePanel>
 
         <ResizableHandle withHandle />
@@ -66,7 +67,7 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapsed
                 Inbox
               </h1>
               <TabsList className='ml-auto'>
-                <TabsTrigger value='inbox'  className='text-zinc-600 dark:text-zinc-200' >
+                <TabsTrigger value='inbox' className='text-zinc-600 dark:text-zinc-200' >
                   Inbox
                 </TabsTrigger>
                 <TabsTrigger value='done' className='text-zinc-600 dark:text-zinc-200'>
@@ -74,8 +75,8 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapsed
                 </TabsTrigger>
               </TabsList>
             </div>
-            <Separator/>
-            {/* SearchBar`` */}
+            <Separator />
+            <SearchBar />
             Search Bar
             <TabsContent value='inbox'>
               <ThreadList />
