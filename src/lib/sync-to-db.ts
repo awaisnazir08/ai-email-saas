@@ -20,9 +20,10 @@ export async function syncEmailsToDatabase(emails: EmailMessage[], accountId: st
 
     try {
         // Promise.all(emails.map((email, index) => upsertEmail(email, accountId, index)))
-        for (const email of emails) {
-            const body = turndown.turndown(email.body ?? email.bodySnippet ?? "")
-            const embeddings = await getEmbeddings(body)
+        await Promise.all(emails.map(async (email) => {
+            const body = turndown.turndown(email.body ?? email.bodySnippet ?? "");
+            const embeddings = await getEmbeddings(body);
+        
             await orama.insert({
                 subject: email.subject,
                 body: body,
@@ -32,9 +33,11 @@ export async function syncEmailsToDatabase(emails: EmailMessage[], accountId: st
                 sentAt: email.sentAt.toLocaleString(),
                 threadId: email.threadId,
                 embeddings: embeddings
-            })
+            });
+        
             await upsertEmail(email, accountId, 0);
-        }
+        }));
+        
     }
     catch (error) {
         console.error("Oopsies, couldn't save email at this moment", error)
