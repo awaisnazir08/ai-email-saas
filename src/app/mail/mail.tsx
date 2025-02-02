@@ -12,6 +12,7 @@ import ThreadList from './thread-list'
 import ThreadDisplay from './thread-display'
 import { useLocalStorage } from 'usehooks-ts'
 import SearchBar from './search-bar'
+import AskAI from './ask-ai'
 
 type Props = {
   defaultLayout: number[] | undefined
@@ -51,9 +52,7 @@ const Mail = ({ defaultLayout = [20, 32, 48], navCollapsedSize, defaultCollapsed
             {/* Sidebar */}
             <Sidebar isCollapsed={isCollapsed} />
             <div className="flex-1">
-              {/* AI */}
-              Ask AI
-
+              <AskAI />
             </div>
           </div>
 
