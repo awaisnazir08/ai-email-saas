@@ -81,9 +81,7 @@ const AskAI = ({ isCollapsed }: { isCollapsed: boolean }) => {
                             }}>
                                 When is my next meeting?
                             </span>
-
                         </div>
-
                     </div>
                     }
                     <form className='w-full flex' onSubmit={handleSubmit}>

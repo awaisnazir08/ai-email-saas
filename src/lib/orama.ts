@@ -79,6 +79,6 @@ export class OramaClient {
             similarity: 0.8,
             limit: 20
         })
-        return results
+        return results;
     }
 }
