@@ -35,7 +35,7 @@ export class OramaClient {
         }
 
         if (account.oramaIndex) {
-            this.orama = await restore('json', account.oramaIndex)
+            this.orama = await restore('json', String(account.oramaIndex))
         }
         else {
             this.orama = await create({
@@ -46,7 +46,8 @@ export class OramaClient {
                     from: 'string',
                     to: 'string[]',
                     sentAt: 'string',
-                    threadId: 'string'
+                    threadId: 'string',
+                    embeddings: 'vector[1536]'
                 }
             })
             await this.saveIndex()

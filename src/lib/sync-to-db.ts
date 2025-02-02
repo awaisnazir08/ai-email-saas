@@ -5,6 +5,8 @@ import pLimit from 'p-limit';
 import { db } from "@/server/db";
 import { OramaClient } from "./orama";
 import { turndown } from "./turndown";
+import { getEmbeddings } from "./embedding";
+import { embed } from "ai";
 
 export async function syncEmailsToDatabase(emails: EmailMessage[], accountId: string) {
     console.log("Attempting to sync emails to database", emails.length)
@@ -20,6 +22,7 @@ export async function syncEmailsToDatabase(emails: EmailMessage[], accountId: st
         // Promise.all(emails.map((email, index) => upsertEmail(email, accountId, index)))
         for (const email of emails) {
             const body = turndown.turndown(email.body ?? email.bodySnippet ?? "")
+            const embeddings = await getEmbeddings(body)
             await orama.insert({
                 subject: email.subject,
                 body: body,
@@ -27,7 +30,8 @@ export async function syncEmailsToDatabase(emails: EmailMessage[], accountId: st
                 from: email.from.address,
                 to: email.to.map(to => to.address),
                 sentAt: email.sentAt.toLocaleString(),
-                threadId: email.threadId
+                threadId: email.threadId,
+                embeddings: embeddings
             })
             await upsertEmail(email, accountId, 0);
         }
