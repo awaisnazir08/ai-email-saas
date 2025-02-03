@@ -62,6 +62,7 @@ const AskAI = ({ isCollapsed }: { isCollapsed: boolean }) => {
                         <div className='flex items-center gap-2 flex-wrap'>
                             <span className='px-2 py-1 bg-gray-800 text-gray-200 rounded-md text-xs' onClick={() => {
                                 handleInputChange({
+                                    //@ts-ignore
                                     target: {value: "What can I ask"}
                                 })
                             }}>
@@ -69,6 +70,7 @@ const AskAI = ({ isCollapsed }: { isCollapsed: boolean }) => {
                             </span>
                             <span className='px-2 py-1 bg-gray-800 text-gray-200 rounded-md text-xs' onClick={() => {
                                 handleInputChange({
+                                    //@ts-ignore
                                     target: {value: "When is my next flight?"}
                                 })
                             }}>
@@ -76,6 +78,7 @@ const AskAI = ({ isCollapsed }: { isCollapsed: boolean }) => {
                             </span>
                             <span className='px-2 py-1 bg-gray-800 text-gray-200 rounded-md text-xs' onClick={() => {
                                 handleInputChange({
+                                    //@ts-ignore
                                     target: {value: "When is my next meeting?"}
                                 })
                             }}>
