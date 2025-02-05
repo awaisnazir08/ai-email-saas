@@ -3,9 +3,15 @@ import { FREE_CREDITS_PER_DAY } from '@/constants';
 import React, { useState } from 'react'
 import StripeButton from './stripe-button';
 import { getSubscriptionStatus } from '@/lib/stripe-actions';
+import { api } from '@/trpc/react';
+import useThreads from '@/hooks/use-threads';
 
 const PremiumBanner = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const { accountId } = useThreads();
+  const { data } = api.account.getChatbotInteraction.useQuery({
+    accountId
+  })
 
   React.useEffect(() => {
     (async () => {
@@ -13,7 +19,7 @@ const PremiumBanner = () => {
       setIsSubscribed(subscriptionStatus);
     })
   }, [])
-  const remainingCredits = 5;
+  
   if (!isSubscribed) {
     return <div className='bg-gray-100 relative p-4 rounded-lg border overflow-hidden flex flex-col md:flex-row gap-4'>
       <img src='/bot.webp' className='md:absolute md:-bottom-6 md:-right-10 h-[180px] w-auto' />
@@ -23,7 +29,7 @@ const PremiumBanner = () => {
             Basic Plan
           </h1>
           <p className='text-gray-400 text-sm md:max-w-full'>
-            {remainingCredits} / {FREE_CREDITS_PER_DAY} messages remaining
+            {data?.remainingCredits} / {FREE_CREDITS_PER_DAY} messages remaining
           </p>
         </div>
         <div className="h-4">
