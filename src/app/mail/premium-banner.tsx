@@ -36,11 +36,26 @@ const PremiumBanner = () => {
       </div>
     </div>
   }
-  return (
-    <div>
 
+  if (isSubscribed) {
+    return <div className='bg-gray-100 relative p-4 rounded-lg border overflow-hidden flex flex-col md:flex-row gap-4'>
+      <img src='/bot.webp' className='md:absolute md:-bottom-6 md:-right-10 h-[180px] w-auto' />
+      <div className=''>
+        <div className="flex items-center gap-2">
+          <h1 className='text-white text-xl font-bold'>
+            Premium Plan
+          </h1>
+        </div>
+        <div className="h-4">
+        </div>
+        <p className='text-gray-400 text-sm md:max-w-[calc(100%-70px)]'>
+        Ask as many questions as you want..!!
+        </p>
+        <div className="h-4"></div>
+        <StripeButton />
+      </div>
     </div>
-  )
+  }
 }
 
 export default PremiumBanner;
