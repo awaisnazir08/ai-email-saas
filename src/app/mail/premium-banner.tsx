@@ -1,10 +1,18 @@
 "use client";
 import { FREE_CREDITS_PER_DAY } from '@/constants';
-import React from 'react'
+import React, { useState } from 'react'
 import StripeButton from './stripe-button';
+import { getSubscriptionStatus } from '@/lib/stripe-actions';
 
 const PremiumBanner = () => {
-  const isSubscribed = false;
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  React.useEffect(() => {
+    (async () => {
+      const subscriptionStatus = await getSubscriptionStatus();
+      setIsSubscribed(subscriptionStatus);
+    })
+  }, [])
   const remainingCredits = 5;
   if (!isSubscribed) {
     return <div className='bg-gray-100 relative p-4 rounded-lg border overflow-hidden flex flex-col md:flex-row gap-4'>
@@ -35,4 +43,4 @@ const PremiumBanner = () => {
   )
 }
 
-export default PremiumBanner
+export default PremiumBanner;
