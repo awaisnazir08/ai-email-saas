@@ -17,6 +17,7 @@ model User {
     lastName String
     imageUrl String?
     accounts Account[]
+    stripeSubscription StripeSubscription?
 }
 
 model Account {
@@ -33,6 +34,20 @@ model Account {
 
     threads Thread[]
     emailAddresses EmailAddress[]
+}
+
+model StripeSubscription {
+    id String @id @default(cuid())
+    createdAt DateTime @default(now())
+    userId String @unique
+    user User @relation(fields: [userId], references: [id])
+
+    customerId String
+    subscriptionId String
+    priceId String
+    currentPeriodEnd DateTime
+    updatedAt DateTime @updatedAt
+
 }
 
 //     // "dev": "next dev --turbo | egrep -v '^\\s?(GET|POST|OPTIONS)'",
