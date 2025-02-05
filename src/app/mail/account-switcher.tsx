@@ -4,7 +4,9 @@ import { getAurinkoAuthUrl } from '@/lib/aurinko';
 import { cn } from '@/lib/utils';
 import { api } from '@/trpc/react'
 import { Plus, PlusIcon } from 'lucide-react';
+import { errorUtil } from 'node_modules/zod/lib/helpers/errorUtil';
 import React, { useState } from 'react'
+import { toast } from 'sonner';
 import { useLocalStorage } from 'usehooks-ts'; // direct replacement of useState
 
 type Props = {
@@ -48,8 +50,12 @@ const AccountSwitcher = ({ isCollapsed }: Props) => {
         })}
 
         <div onClick={async () => {
-          const authUrl = await getAurinkoAuthUrl('Google')
-          window.location.href = authUrl;
+          try {
+            const authUrl = await getAurinkoAuthUrl('Google')
+            window.location.href = authUrl;
+          } catch(error) {
+              toast.error((error as Error).message)
+          }
         }} className='flex items-center relative hover:bg-gray-50 w-full cursor-pointer rounded-sm py-1.5 pl-2 pr-8 text-sm outline focus:bg-accent'>
           <Plus className='size-4 mr-1' />
           Add account
