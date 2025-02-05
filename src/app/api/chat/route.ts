@@ -1,18 +1,46 @@
+import { db } from './../../../server/db';
 import { Configuration, OpenAIApi } from 'openai-edge';
 import { Message, streamText } from 'ai';
 import { auth } from '@clerk/nextjs/server';
 import { OramaClient } from '@/lib/orama';
 import { openai } from '@ai-sdk/openai';
+import { getSubscriptionStatus } from '@/lib/stripe-actions';
+import { FREE_CREDITS_PER_DAY } from '@/constants';
 
 // const openai = new OpenAIApi(new Configuration({
 //     apiKey: process.env.OPENAI_API_KEY
 // }))
 
 export async function POST(req: Request) {
+
+    const today = new Date().toDateString();
     try {
         const { userId } = await auth();
         if (!userId) {
             return new Response('Unauthorized', { status: 401 })
+        }
+
+        const isSubscribed = await getSubscriptionStatus();
+
+        if (!isSubscribed) {
+            const chatbotInteraction = await db.chatbotInteraction.findUnique({
+                where: {
+                    userId: userId,
+                    day: today
+                }
+            })
+
+            if (!chatbotInteraction) {
+                await db.chatbotInteraction.create({
+                    data: {
+                        day: today,
+                        userId: userId,
+                        count: 1
+                    }
+                })
+            } else if (chatbotInteraction.count >= FREE_CREDITS_PER_DAY){
+                return new Response("You have reached the free limit for today", { status: 429 })
+            }
         }
         const { accountId, messages } = await req.json();
         const orama = new OramaClient(accountId)
@@ -54,6 +82,18 @@ export async function POST(req: Request) {
         //     },
         //     onText: (text)
         // })
+
+        await db.chatbotInteraction.update({
+            where: {
+                userId: userId,
+                day: today
+            },
+            data: {
+                count: {
+                    increment: 1
+                }
+            }
+        })
         return response.toDataStreamResponse();
 
     } catch (error) {
