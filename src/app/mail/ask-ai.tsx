@@ -7,6 +7,7 @@ import { useChat } from 'ai/react';  //for getting messages
 import useThreads from '@/hooks/use-threads';
 import PremiumBanner from './premium-banner';
 import { api } from '@/trpc/react';
+import { toast } from 'sonner';
 
 const AskAI = ({ isCollapsed }: { isCollapsed: boolean }) => {
     const { accountId } = useThreads();
@@ -17,6 +18,7 @@ const AskAI = ({ isCollapsed }: { isCollapsed: boolean }) => {
             accountId
         },
         onError: error => {
+            toast.error((error as Error).message)
             console.log('error', error)
         },
         initialMessages: [],
