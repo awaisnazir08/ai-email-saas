@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Send, SparklesIcon } from 'lucide-react';
 import { useChat } from 'ai/react';  //for getting messages
 import useThreads from '@/hooks/use-threads';
+import PremiumBanner from './premium-banner';
 
 const AskAI = ({ isCollapsed }: { isCollapsed: boolean }) => {
     const { accountId } = useThreads();
@@ -24,6 +25,10 @@ const AskAI = ({ isCollapsed }: { isCollapsed: boolean }) => {
     }
     return (
         <div className='p-4 mb-14'>
+            <PremiumBanner />
+            <div className="h-4">
+                
+            </div>
             <motion.div className='flex flex-1 flex-col items-end pb-4 p-4 rounded-lg bg-gray-100 shadow-inner dark:bg-gray-900'>
                 <div className='max-h-[50vh] overflow-y-scroll w-full flex flex-col gap-2' id='message-container'>
                     <AnimatePresence mode='wait'>
